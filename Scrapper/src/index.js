@@ -23,6 +23,16 @@ async function main() {
     console.log("Getting albums")
     await page.click(".ytmusic-shelf a")
 
+    await new Promise(res => setTimeout(res, 1000))
+    let listAlbums = await page.evaluate(async () => {
+        return Array.from(document.querySelectorAll("ytmusic-grid-renderer>#items>ytmusic-two-row-item-renderer>a")).map(itm => {
+            return {
+                title: itm.attributes.title.value,
+                url: itm.attributes.href.value.split("/")[1], // https://music.youtube.com/browse/
+                img: itm.querySelector("img").attributes.src.value
+            }
+        })
+    })
 }
 
 main()
