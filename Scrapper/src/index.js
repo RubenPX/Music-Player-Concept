@@ -1,4 +1,5 @@
 import { chromium } from "playwright"
+import fs from "fs"
 
 async function getAlbumInfo(context, albumInfo) {
     const page = await context.newPage()
@@ -59,6 +60,11 @@ async function main() {
     console.group("Getting " + listAlbums.length + " albums info")
     let FullAlbumInfos = await Promise.all(listAlbums.map((v) => getAlbumInfo(context, v)))
     console.groupEnd()
+
+    await browser.close()
+
+    console.log("Saving info")
+    fs.writeFileSync("./generated/playlist.json", JSON.stringify(FullAlbumInfos), {encoding: "utf-8"})
 }
 
 main()
