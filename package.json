@@ -1,0 +1,10 @@
+{
+  "name": "hola-beats-gitpages",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "Scrapper",
+    "WebApp"
+  ]
+}
