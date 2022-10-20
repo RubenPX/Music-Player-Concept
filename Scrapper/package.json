@@ -1,0 +1,12 @@
+{
+  "name": "scrapper",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node ./src/index.js"
+  },
+  "dependencies": {
+    "playwright": "^1.27.1"
+  }
+}
