@@ -1,4 +1,4 @@
-import { chromium } from "playwright"
+import { firefox } from "playwright"
 import fs from "fs"
 
 async function getAlbumInfo(context, albumInfo) {
@@ -24,7 +24,7 @@ async function getAlbumInfo(context, albumInfo) {
 
 async function main() {
     console.group("Configuring browser")
-    const browser = await chromium.launch({ headless: false })
+    const browser = await firefox.launch({ headless: true })
 
     console.log("Creating context")
     const context = await browser.newContext({
@@ -42,8 +42,13 @@ async function main() {
     await page.click("[jsname='b3VHJd']") //! Aceptamos los terminos y condiciones de YT
     console.groupEnd()
 
-    console.log("Getting albums")
-    await page.click(".ytmusic-shelf a")
+    try {
+        console.log("Getting albums")
+        await page.click(".ytmusic-shelf a")
+    } catch (err) {
+        await page.screenshot({path: 'screenshot.png'});
+        throw err
+    }
 
     await new Promise(res => setTimeout(res, 1000))
     let listAlbums = await page.evaluate(async () => {
