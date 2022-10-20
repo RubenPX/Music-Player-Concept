@@ -1,5 +1,26 @@
 import { chromium } from "playwright"
 
+async function getAlbumInfo(context, albumInfo) {
+    const page = await context.newPage()
+    await page.goto("https://music.youtube.com/browse/" + albumInfo.url);
+
+    let musics = await page.evaluate(async () => {
+        return Array.from(document.querySelectorAll("ytmusic-shelf-renderer>#contents>ytmusic-responsive-list-item-renderer")).map(itm => {
+            let linkBase = itm.querySelector("a")
+            return {
+                title: linkBase.innerText,
+                duration: itm.querySelector(".fixed-columns.style-scope.ytmusic-responsive-list-item-renderer yt-formatted-string").attributes.title.value,
+                url: linkBase.attributes.href.value.split("?v=")[1].split("&list=")[0],
+            }
+        })
+    })
+
+    page.close()
+    console.log("Album " + albumInfo.title + " processed")
+
+    return {...albumInfo, playlist: musics}
+}
+
 async function main() {
     console.group("Configuring browser")
     const browser = await chromium.launch({ headless: false })
@@ -33,6 +54,11 @@ async function main() {
             }
         })
     })
+
+    // Conseguimos los datos de forma paralela
+    console.group("Getting " + listAlbums.length + " albums info")
+    let FullAlbumInfos = await Promise.all(listAlbums.map((v) => getAlbumInfo(context, v)))
+    console.groupEnd()
 }
 
 main()
