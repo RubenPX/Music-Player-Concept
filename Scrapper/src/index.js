@@ -30,6 +30,7 @@ async function main() {
     const context = await browser.newContext({
         javaScriptEnabled: true
     })
+    context.setDefaultTimeout(60 * 1000)
 
     console.log("Creating page")
     const page = await context.newPage();
