@@ -31,4 +31,20 @@ function SetAlbum(num) {
         <div class="duration">${song.duration}</div>
       </div>`
     }).join(" ");
+
+    [...document.querySelectorAll("#SongList > [songID]")].map(DOMItem => {
+        DOMItem.addEventListener("click", () => {
+            albumTitle = DOMItem.getAttribute("albumTitle")
+            songURL = DOMItem.getAttribute("songURL")
+            imgURL = DOMItem.getAttribute("IMGAlbum")
+            songTitle = DOMItem.querySelector("div").innerText
+            PlayMusic(songURL, songTitle, albumTitle, imgURL)
+        })
+    })
+}
+
+function PlayMusic(songID, songTitle, albumTitle, IMGAlbum) {
+    document.querySelector("#CurrentPlay .info .song .name").innerHTML = songTitle
+    document.querySelector("#CurrentPlay .info .song .artist").innerHTML = albumTitle
+    document.querySelector("#CurrentPlay .info img").setAttribute("src", IMGAlbum)
 }
