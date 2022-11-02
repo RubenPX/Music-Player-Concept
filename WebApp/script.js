@@ -1,3 +1,6 @@
+let albumInfos = []
+let AlbumAuthor = "Hola Beats"
+let selectedAlbum = {};
 async function main() {
     albumInfos = await fetch("playlist.json").then(async res => await res.json())
     setupAlbums()
@@ -47,4 +50,34 @@ function PlayMusic(songID, songTitle, albumTitle, IMGAlbum) {
     document.querySelector("#CurrentPlay .info .song .name").innerHTML = songTitle
     document.querySelector("#CurrentPlay .info .song .artist").innerHTML = albumTitle
     document.querySelector("#CurrentPlay .info img").setAttribute("src", IMGAlbum)
+
+    player.loadVideoById(songID)
 }
+
+
+// YOUTUBE API IFRAME
+
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '360',
+        width: '640'
+    });
+}
+
+function PlayPause() {
+    const state = player.getPlayerState();
+    if (state === 1) {
+        player.pauseVideo()
+    } else {
+        player.playVideo()
+    }
+}
+
+document.getElementById("playPause").addEventListener("click", () => PlayPause())
