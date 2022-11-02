@@ -1,6 +1,8 @@
+![Hola Beats](WebApp/BG.jpg)
+
 # Concept Music Player
 
-This is a concept of music player 
+This is a concept of music player
 
 ## Projects
 
